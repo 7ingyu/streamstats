@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\TwitchController;
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -27,7 +27,7 @@ Route::get('/', function () {
         'appUrl' => env('APP_URL'),
         'csrf' => csrf_token(),
     ]);
-});
+})->name('home');
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
@@ -39,6 +39,6 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::get('/oauth', [TwitchController::class, 'oauth'])->name('twitch.oauth');
+Route::get('/oauth', [AuthenticatedSessionController::class, 'store'])->name('twitch.oauth');
 
 require __DIR__.'/auth.php';

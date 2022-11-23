@@ -28,7 +28,8 @@ class TwitchController extends Controller
             'code' => $code,
             'grant_type' => 'authorization_code',
             'redirect_uri' => env('APP_URL'),
-        ])->throw();
+        ])
+            ->throw();
         $data = $response->json();
         Log::info('oath: ' . json_encode($data));
         return $data['access_token'];
@@ -43,8 +44,10 @@ class TwitchController extends Controller
     public static function validateToken($token)
     {
         Log::info('token: ' . $token);
-        $response = Http::withToken($token)
-            ->acceptJson()
+        $response = Http::withHeaders([
+            'Authorization' => 'Bearer ' . $token,
+            'Client-Id' => env('TWITCH_CLIENT_ID'),
+        ])
             ->get('https://id.twitch.tv/oauth2/validate')
             ->throw();
         $data = $response->json();
@@ -67,7 +70,7 @@ class TwitchController extends Controller
             ->get('https://api.twitch.tv/helix/users?id=' . $twitch_id)
             ->throw();
         $data = $response->json();
-        return $data;
+        return $data['data'][0];
     }
 
 }

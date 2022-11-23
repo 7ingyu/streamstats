@@ -7,7 +7,7 @@ export default function Home ({ auth, clientId, appUrl, csrf, ...props }) {
       ?response_type=code
       &client_id=${clientId}
       &redirect_uri=${appUrl}/oauth
-      &scope=channel%3Amanage%3Apolls+channel%3Aread%3Apolls
+      &scope=user%3Aread%3Aemail
       &state=${csrf}`.replace(/\s/g, '');
 
     // Redirect to dashboard if already logged in
