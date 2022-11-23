@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Requests\ProfileUpdateRequest;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\Request;
+use Illuminate\Http\Client\RequestException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
@@ -31,7 +33,6 @@ class TwitchController extends Controller
         ])
             ->throw();
         $data = $response->json();
-        Log::info('oath: ' . json_encode($data));
         return $data['access_token'];
     }
 
@@ -43,7 +44,6 @@ class TwitchController extends Controller
      */
     public static function validateToken($token)
     {
-        Log::info('token: ' . $token);
         $response = Http::withHeaders([
             'Authorization' => 'Bearer ' . $token,
             'Client-Id' => env('TWITCH_CLIENT_ID'),
@@ -71,6 +71,44 @@ class TwitchController extends Controller
             ->throw();
         $data = $response->json();
         return $data['data'][0];
+    }
+
+    /**
+     * Get followed streams
+     *
+     * @param null
+     * @return array $user_data
+     */
+    public static function getTwitchFollowedStreams()
+    {
+        $streams = [];
+        $user = Auth::user();
+        $cursor = true;
+
+        self::validateToken($user->access_token);
+
+        while (!!$cursor) {
+            $uri = 'https://api.twitch.tv/helix/streams/followed?user_id=' . $user->twitch_id;
+            if (gettype($cursor) == 'string') {
+                $uri = $uri . '&after=' . $cursor;
+            }
+            try {
+                $response = Http::withHeaders([
+                    'Authorization' => 'Bearer ' . $user->access_token,
+                    'Client-Id' => env('TWITCH_CLIENT_ID'),
+                ])
+                    ->get($uri)
+                    ->throw();
+                $data = $response->json();
+                $streams[] = $data['data'];
+                $cursor = $data['pagination']['cursor'] ?? false;
+            } catch (RequestException $e) {
+                Log::error($e);
+                $cursor = false;
+            }
+        }
+
+        return $streams;
     }
 
 }

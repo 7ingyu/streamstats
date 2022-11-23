@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\TwitchController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -41,4 +42,5 @@ Route::middleware('auth')->group(function () {
 
 Route::get('/oauth', [AuthenticatedSessionController::class, 'store'])->name('twitch.oauth');
 
+Route::middleware('twitch')->get('/twitch/follows', [TwitchController::class, 'getFollowedStreams'])->name('twitch.follows');
 require __DIR__.'/auth.php';
