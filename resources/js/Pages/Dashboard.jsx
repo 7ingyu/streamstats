@@ -1,23 +1,47 @@
 import React from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import QueryWrapper from '@/Layouts/QueryWrapper';
 import { Head } from '@inertiajs/inertia-react';
+import { useGetFollowStreams } from '@/Hooks';
 
-export default function Dashboard(props) {
+function Content({ auth, errors, ...props }) {
+
+    const { data, isSuccess, isLoading, isError } = useGetFollowStreams();
+
     return (
         <AuthenticatedLayout
-            auth={props.auth}
-            errors={props.errors}
-            header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Dashboard</h2>}
+            auth={auth}
+            errors={errors}
         >
             <Head title="Dashboard" />
 
-            <div className="py-12">
-                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                    <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                        <div className="p-6 text-gray-900">You're logged in!</div>
+            <div className="container">
+                <div className="row">
+                    <div className="col-12">
+                        {!!isLoading && (
+                            <div className="w-100 h-100 d-flex justify-content-center align-items-center p-5">
+                                <div class="spinner-border" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                            </div>
+                        )}
+                        {!!isSuccess && (
+                            <div
+                                dangerouslySetInnerHTML={{__html: data}}
+                            />
+                        )}
+                        {!!isError && (
+                            'Error: Could not load data'
+                        )}
                     </div>
                 </div>
             </div>
         </AuthenticatedLayout>
     );
+}
+
+export default function Dashboard(props) {
+    return (
+        <QueryWrapper Component={Content} {...props} />
+    )
 }

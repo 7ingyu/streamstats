@@ -27,6 +27,7 @@
         "vite": "^3.0.0"
     },
     "dependencies": {
-        "bootstrap": "^5.2.3"
+        "bootstrap": "^5.2.3",
+        "react-query": "^3.39.2"
     }
 }

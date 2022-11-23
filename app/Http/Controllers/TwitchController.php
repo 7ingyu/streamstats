@@ -79,7 +79,7 @@ class TwitchController extends Controller
      * @param null
      * @return array $user_data
      */
-    public static function getTwitchFollowedStreams()
+    public static function getFollowedStreams()
     {
         $streams = [];
         $user = Auth::user();
