@@ -78,10 +78,10 @@ class AuthenticatedSessionController extends Controller
                 'login' => $username,
             ] = TwitchController::getTwitchUserByID($access_token, $twitch_id);
         } catch (RequestException $e) {
-            Log::info($e);
+            Log::error($e);
             return $this->destroy($request);
         } catch (\Exception $e) {
-            Log::info($e);
+            Log::error($e);
             return $this->destroy($request);
         }
 
