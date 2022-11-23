@@ -18,10 +18,12 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
+        'username',
         'email',
         'password',
-        'twitch',
+        'twitch_id',
+        'token',
+        'access_token',
     ];
 
     /**
