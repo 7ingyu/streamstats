@@ -2,7 +2,15 @@
 
 https://13.57.223.210.sslip.io/
 
-### To Do:
+## Tech:
+- AWS EC2 + RDS
+- Laravel
+- MySQL
+- Inertia + React
+- Bootstrap + SCSS
+- Vite
+
+## To Do:
 - Data Visualization
   - Viewers per Game
   - Median Viewers of Top 100 Streams
