@@ -6,7 +6,7 @@ export default function Home ({ auth, clientId, appUrl, csrf, ...props }) {
     const oathUrl = `https://id.twitch.tv/oauth2/authorize
       ?response_type=code
       &client_id=${clientId}
-      &redirect_uri=${appUrl}/oauth
+      &redirect_uri=${appUrl}/oauth/
       &scope=user%3Aread%3Aemail+user%3Aread%3Afollows
       &state=${csrf}`.replace(/\s/g, '');
 

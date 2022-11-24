@@ -208,7 +208,9 @@ class TwitchController extends Controller
         // Which of the top 1000 streams is the logged in user following?
         $stream_ids = [];
         foreach ($userStreams as $user_stream) {
-            $stream_ids[] = $user_stream[0]['id'];
+            if ($user_stream[0]['id'] ?? false) {
+                $stream_ids[] = $user_stream[0]['id'];
+            }
         }
         $followedTopStreams = TopStream::whereIn('stream_id', $stream_ids)->get();
 

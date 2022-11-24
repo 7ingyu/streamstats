@@ -16,7 +16,7 @@ export default function QueryWrapper({ Component, ...props }) {
     return (
         <QueryClientProvider client={queryClient} contextSharing={true}>
             <Component {...props} />
-            <ReactQueryDevtools initialIsOpen={false} />
+            {/* <ReactQueryDevtools initialIsOpen={false} /> */}
         </QueryClientProvider>
     );
 }

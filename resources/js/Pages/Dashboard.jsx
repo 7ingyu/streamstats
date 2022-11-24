@@ -40,7 +40,7 @@ function Content({auth, errors, ...props}) {
             How many viewers does the lowest viewer count stream that the logged in user is following need to gain in order to make it into the top 1000?
             Which tags are shared between the user followed streams and the top 1000 streams? Also make sure to translate the tags to their respective name? */}
 
-            <div className="container">
+            <div className="container pb-5">
                 <div className="row">
                     <div className="col-12">
                         <StreamsPerGame {...props} />
