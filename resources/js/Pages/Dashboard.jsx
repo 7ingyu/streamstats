@@ -1,12 +1,29 @@
-import React from 'react';
+import React, {useState} from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import QueryWrapper from '@/Layouts/QueryWrapper';
 import { Head } from '@inertiajs/inertia-react';
-import { useGetFollowStreams } from '@/Hooks';
+// import { useGetFollowStreams } from '@/Hooks';
+import { StreamsPerGame } from '@/Components/dashboardComponents';
 
-function Content({ auth, errors, ...props }) {
+// props = {
+//     auth,
+//     errors,
+//     userStreams,
+//     topStreams,
+//     sharedTags,
+//     needForTop100,
+//     followedTopStreams,
+//     streamsPerHr,
+//     topStreamsAsc,
+//     topSteamsDesc,
+//     medianViews,
+//     gamesByViewers,
+//     streamsPerGame,
+//  };
 
-    const { data, isSuccess, isLoading, isError } = useGetFollowStreams();
+function Content({auth, errors, ...props}) {
+
+    // const { data, isSuccess, isLoading, isError } = useGetFollowStreams();
 
     return (
         <AuthenticatedLayout
@@ -14,25 +31,19 @@ function Content({ auth, errors, ...props }) {
             errors={errors}
         >
             <Head title="Dashboard" />
+            {/* Total number of streams for each game
+            Top games by viewer count for each game
+            Median number of viewers for all streams
+            List of top 100 streams by viewer count that can be sorted asc & desc
+            Total number of streams by their start time (rounded to the nearest hour)
+            Which of the top 1000 streams is the logged in user following?
+            How many viewers does the lowest viewer count stream that the logged in user is following need to gain in order to make it into the top 1000?
+            Which tags are shared between the user followed streams and the top 1000 streams? Also make sure to translate the tags to their respective name? */}
 
             <div className="container">
                 <div className="row">
                     <div className="col-12">
-                        {!!isLoading && (
-                            <div className="w-100 h-100 d-flex justify-content-center align-items-center p-5">
-                                <div class="spinner-border" role="status">
-                                    <span class="visually-hidden">Loading...</span>
-                                </div>
-                            </div>
-                        )}
-                        {!!isSuccess && (
-                            <div
-                                dangerouslySetInnerHTML={{__html: data}}
-                            />
-                        )}
-                        {!!isError && (
-                            'Error: Could not load data'
-                        )}
+                        <StreamsPerGame {...props} />
                     </div>
                 </div>
             </div>
