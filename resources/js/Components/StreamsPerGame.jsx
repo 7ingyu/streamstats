@@ -11,7 +11,7 @@ export default function StreamsPerGame ({ streamsPerGame }) {
           aria-label="Show Streams Per Game"
       >
           Streams Per Game{` `}
-          {showStreamsPerGame ? <i class="bi bi-caret-up"></i> : <i className="bi bi-caret-down"></i>}
+          {showStreamsPerGame ? <i className="bi bi-caret-up"></i> : <i className="bi bi-caret-down"></i>}
       </h2>
       {showStreamsPerGame && Object.entries(streamsPerGame).map(([name, count], i) => (
           <div className="row" key={i}>
