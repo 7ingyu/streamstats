@@ -111,4 +111,31 @@ class TwitchController extends Controller
         return $streams;
     }
 
+    /**
+     * Get top streams
+     *
+     * @param null
+     * @return array $user_data
+     */
+    public static function getTopStreams()
+    {
+        // Get Access Token
+        $auth_res = Http::post('https://id.twitch.tv/oauth2/token', [
+            'client_id' => env('TWITCH_CLIENT_ID'),
+            'client_secret' => env('TWITCH_CLIENT_SECRET'),
+            'grant_type' => 'client_credentials',
+        ])
+            ->throw();
+        $data = $auth_res->json();
+        $access_token = $data['access_token'];
+
+        $stream_res = Http::withHeaders([
+            'Authorization' => 'Bearer ' . $access_token,
+            'Client-Id' => env('TWITCH_CLIENT_ID'),
+        ])
+            ->get('https://api.twitch.tv/helix/streams?first=100')
+            ->throw();
+        $data = $stream_res->json();
+        return $data['data'];
+    }
 }

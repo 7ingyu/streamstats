@@ -42,5 +42,8 @@ Route::middleware('auth')->group(function () {
 
 Route::get('/oauth', [AuthenticatedSessionController::class, 'store'])->name('twitch.oauth');
 
-Route::middleware('twitch')->get('/twitch/follows', [TwitchController::class, 'getFollowedStreams'])->name('twitch.follows');
+Route::middleware('twitch')
+    ->get('/twitch/follows', [TwitchController::class, 'getFollowedStreams'])
+    ->name('twitch.follows');
+
 require __DIR__.'/auth.php';
