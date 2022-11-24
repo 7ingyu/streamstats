@@ -3,7 +3,9 @@
 namespace App\Console\Commands;
 
 use App\Http\Controllers\TwitchController;
+use App\Models\TopStream;
 use Illuminate\Console\Command;
+use Carbon\Carbon;
 
 class FetchTopStreams extends Command
 {
@@ -28,7 +30,36 @@ class FetchTopStreams extends Command
      */
     public function handle()
     {
+        $this->info(now());
+        // Fetch data
+        $this->info('Fetching data');
         $streams = TwitchController::getTopStreams();
-        dd(collect($streams)->count());
+
+        // Shuffle data
+        $this->info('Shuffling data');
+        shuffle($streams);
+
+        // Format data for insert
+        $records = [];
+        $this->info('Formatting data');
+        foreach ($streams as $stream) {
+            $records[] = [
+                'channel_name' => $stream['user_name'],
+                'stream_title' => $stream['title'],
+                'game_name' => $stream['game_name'],
+                'viewers' => $stream['viewer_count'],
+                'start_time' => Carbon::parse($stream['started_at']),
+            ];
+        }
+
+        // Truncate table
+        $this->info('Truncating table');
+        TopStream::truncate();
+
+        // Insert new data
+        $this->info('Inserting data');
+        TopStream::insert($records);
+
+        $this->info(collect($records)->count() . ' records inserted');
     }
 }

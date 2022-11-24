@@ -15,7 +15,9 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('twitch:top')->everyFifteenMinutes();
+        $schedule->command('twitch:top')
+            ->everyFifteenMinutes()
+            ->appendOutputTo(storage_path() . '/logs/commands.log');
     }
 
     /**
