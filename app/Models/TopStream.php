@@ -15,10 +15,12 @@ class TopStream extends Model
      * @var array<int, string>
      */
     protected $fillable = [
+        'stream_id',
         'channel_name',
         'stream_title',
         'game_name',
         'viewers',
+        'tags',
         'start_time',
     ];
 

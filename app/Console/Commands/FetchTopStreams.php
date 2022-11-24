@@ -44,10 +44,12 @@ class FetchTopStreams extends Command
         $this->info('Formatting data');
         foreach ($streams as $stream) {
             $records[] = [
+                'stream_id' => $stream['id'],
                 'channel_name' => $stream['user_name'],
                 'stream_title' => $stream['title'],
                 'game_name' => $stream['game_name'],
                 'viewers' => $stream['viewer_count'],
+                'tags' => join(', ', $stream['tag_ids']),
                 'start_time' => Carbon::parse($stream['started_at']),
             ];
         }
